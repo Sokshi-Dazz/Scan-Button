@@ -301,25 +301,7 @@ def click_return_home_button(desktop):
  
     except Exception as e:
         log_step(f"Error while clicking 'Return Home' button: {e}", "FAIL")
-    
- 
-# -------------------------------------------------------------
-#  REPORT
-# -------------------------------------------------------------
-def generate_report():
-    html = """<html><head><title>Automation Report</title></head><body>
-<h2>HP Account Automation Report - SIGN IN, SCAN & RETURN HOME</h2><table border='1'>
-<tr><th>Step</th><th>Status</th></tr>"""
-    for desc, status in REPORT:
-        html += f"<tr><td>{desc}</td><td>{status}</td></tr>"
-    html += "</table></body></html>"
- 
-    with open("automation_report.html", "w") as f:
-        f.write(html)
- 
-    print("Report generated: automation_report.html")
- 
- 
+  
 # -------------------------------------------------------------
 #  MAIN FLOW (SIGN-IN + CLICK SCAN + RETURN HOME)
 # ------------------------------------------------------------- 
