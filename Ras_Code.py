@@ -190,7 +190,7 @@ def sign_in_hp_account(desktop, email, password):
  
     except Exception as e:
         log_step(f"Error during HP Account sign-in: {e}", "FAIL")
-        
+
 # -------------------------------------------------------------
 #  CLICK SCAN BUTTON ON HP SMART MAIN WINDOW
 # -------------------------------------------------------------
@@ -237,7 +237,25 @@ def click_scan_button(desktop):
     except Exception as e:
         log_step(f"Error while clicking 'Scan' button: {e}", "FAIL")
  
+def click_scan_button_get_more(desktop):
+        main_win = desktop.window(title_re=".*HP Smart.*")
+        main_win.wait("exists visible enabled ready", timeout=30)
+        main_win.set_focus()
+        log_step("Refocused HP Smart main window before clicking 'Scan'.")
  
+        # First try to locate by exact title
+    
+        scan_btn = main_win.child_window(
+            title="Scan",
+            control_type="Button",
+        )
+        scan_btn.wait("visible enabled ready", timeout=25).click_input()
+        get_help = main_win.child_window(
+            auto_id="NoContentGridGetMoreHelpBtn",
+            control_type="Button",
+        )
+        get_help.wait("visible enabled ready", timeout=25).click_input()
+        
 # -------------------------------------------------------------
 #  CLICK RETURN HOME BUTTON ON SCAN SCREEN
 # -------------------------------------------------------------
@@ -327,9 +345,9 @@ def main():
  
     # After successful sign-in, click on the Scan button in HP Smart
     click_scan_button(desktop)
- 
-    # On the Scan screen, click "Return Home"
     click_return_home_button(desktop)
+    click_scan_button_get_more(desktop)
+    # On the Scan screen, click "Return Home"
  
     # Generate final HTML report
     generate_report()
