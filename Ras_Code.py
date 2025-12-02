@@ -2,6 +2,7 @@ import time
  
 import pytest
 from pywinauto import Desktop, keyboard
+from pywinauto.keyboard import send_keys
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
  
@@ -161,6 +162,11 @@ def sign_in_hp_account(desktop, email, password):
             sign_in_btn.wait("visible enabled ready", timeout=30)
             sign_in_btn.click_input()
             log_step("Clicked final 'Sign in' button using auto_id.")
+
+            time.sleep(15)
+            send_keys("{TAB}")
+            send_keys("{TAB}")
+            send_keys("{ENTER}")
         except Exception:
             # Fallback: search all buttons containing 'Sign in' text
             buttons = browser_win.descendants(control_type="Button")
@@ -184,13 +190,7 @@ def sign_in_hp_account(desktop, email, password):
  
     except Exception as e:
         log_step(f"Error during HP Account sign-in: {e}", "FAIL")
-        # For deeper debugging, you can temporarily enable:
-        # try:
-        #     browser_win.print_control_identifiers()
-        # except Exception:
-        #     pass
- 
- 
+        
 # -------------------------------------------------------------
 #  CLICK SCAN BUTTON ON HP SMART MAIN WINDOW
 # -------------------------------------------------------------
@@ -283,7 +283,7 @@ def click_return_home_button(desktop):
  
     except Exception as e:
         log_step(f"Error while clicking 'Return Home' button: {e}", "FAIL")
- 
+    
  
 # -------------------------------------------------------------
 #  REPORT
@@ -304,7 +304,7 @@ def generate_report():
  
 # -------------------------------------------------------------
 #  MAIN FLOW (SIGN-IN + CLICK SCAN + RETURN HOME)
-# -------------------------------------------------------------
+# ------------------------------------------------------------- 
 def main():
     # Fixed credentials for sign-in
     email_id = "john321@mailsac.com"
@@ -323,9 +323,7 @@ def main():
  
     # Fill HP Account sign-in form
     sign_in_hp_account(desktop, email_id, password)
- 
-    # No Selenium driver currently used; keep placeholder for future
-    accept_alert_if_present(driver=None)
+
  
     # After successful sign-in, click on the Scan button in HP Smart
     click_scan_button(desktop)
